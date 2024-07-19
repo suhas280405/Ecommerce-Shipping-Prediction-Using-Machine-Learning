@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Predict Reached.on.Time_Y.N</title>
+  </head>
+  <body>
+    <h1>Predict Reached.on.Time_Y.N</h1>
+    <form id="predict-form">
+      <label for="ID">ID:</label><br>
+      <input type="number" id="ID" name="ID"><br>
+      <label for="Warehouse_block">Warehouse Block:</label><br>
+      <input type="text" id="Warehouse_block" name="Warehouse_block"><br>
+      <label for="Mode_of_Shipment">Mode of Shipment:</label><br>
+      <input type="text" id="Mode_of_Shipment" name="Mode_of_Shipment"><br>
+      <label for="Customer_care_calls">Customer Care Calls:</label><br>
+      <input type="number" id="Customer_care_calls" name="Customer_care_calls"><br>
+      <label for="Customer_rating">Customer Rating:</label><br>
+      <input type="number" id="Customer_rating" name="Customer_rating"><br>
+      <label for="Cost_of_the_Product">Cost of the Product:</label><br>
+      <input type="number" id="Cost_of_the_Product" name="Cost_of_the_Product"><br>
+      <label for="Prior_purchases">Prior Purchases:</label><br>
+      <input type="number" id="Prior_purchases" name="Prior_purchases"><br>
+      <label for="Product_importance">Product Importance:</label><br>
+      <input type="text" id="Product_importance" name="Product_importance"><br>
+      <label for="Gender">Gender:</label><br>
+      <input type="text" id="Gender" name="Gender"><br>
+      <label for="Discount_offered">Discount Offered:</label><br>
+      <input type="number" id="Discount_offered" name="Discount_offered"><br>
+      <label for="Weight_in_gms">Weight in gms:</label><br>
+      <input type="number" id="Weight_in_gms" name="Weight_in_gms"><br>
+      <input type="submit" value="Predict">
+    </form>
+    <div id="result"></div>
+    <script>
+      const form = document.getElementById('predict-form');
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const formData = new FormData(form);
+        const data = {};
+        for (const [key, value] of formData.entries()) {
+          data[key] = value;
+        }
+        try {
+          const response = await fetch('/predict', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data),
+          });
+          const result = await response.text();
+          document.getElementById('result').innerHTML = `Prediction: ${result}`;
+        } catch (error) {
+          document.getElementById('result').innerHTML = `Error: ${error.message}`;
+        }
+      });
+    </script>
+  </body>
+</html>
